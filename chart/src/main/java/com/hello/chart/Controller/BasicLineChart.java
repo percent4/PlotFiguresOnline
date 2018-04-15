@@ -1,30 +1,20 @@
 package com.hello.chart.Controller;
 
-public class Chart {
+public class BasicLineChart {
 
-    private String chartType;
     private String xdata;
     private String ydata;
     private String title;
     private String xlabel;
     private String ylabel;
 
-    Chart() {}
-    Chart(String chartType, String xdata, String ydata,String title, String xlabel, String ylabel) {
-        this.chartType = chartType;
+    BasicLineChart() {}
+    BasicLineChart(String xdata, String ydata,String title, String xlabel, String ylabel) {
         this.xdata = xdata;
         this.ydata = ydata;
         this.title = title;
         this.xlabel = xlabel;
         this.ylabel = ylabel;
-    }
-
-    public String getChartType() {
-        return chartType;
-    }
-
-    public void setChartType(String chartType) {
-        this.chartType = chartType;
     }
 
     public String getXdata() {

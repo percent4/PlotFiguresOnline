@@ -6,20 +6,25 @@
     <title>Figure plotting</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/images/chart.ico">
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/plot.js"></script>
     <script th:inline="javascript">
         function ShowParams(){
+
             var chart = /*[[${chart}]]*/ null ;
-            document.getElementById("chart").innerHTML = '{"xdata": ' + chart.xdata+
+            document.getElementById("chart").innerHTML = '{"chartType": "' + chart.chartType + '"'+
+                                                         ', "xdata": ' + chart.xdata+
                                                          ', "ydata": ' + chart.ydata+
                                                          ', "title": ' + '"'+chart.title +'"'+
                                                          ', "xlabel": ' + '"'+chart.xlabel +'"'+
                                                          ', "ylabel": ' + '"'+chart.ylabel+'"'+"}";
         }
     </script>
+
 </head>
 
 <body>
@@ -28,36 +33,47 @@
 
     <form class="form-horizontal" role="form" action="#" th:action="@{/chartplot}" th:object="${chart}" method="post">
 
-        <div class="form-group" style="width:300px">
-            <label for="xdata" class="col-sm-2 control-label">xdata</label>
+        <div class="form-group" style="width:600px">
+            <label for="chartType" class="col-sm-2 control-label">图片类型</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="chartType" th:field="*{chartType}">
+                    <option value="折线图" th:selected="${chartType=='折线图'}">折线图</option>
+                    <option value="饼图" th:selected="${chartType=='饼图'}">饼图</option>
+                    <option value="柱形图" th:selected="${chartType=='柱形图'}">柱形图</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" style="width:600px">
+            <label for="xdata" class="col-sm-2 control-label">x值</label>
             <div class="col-sm-10">
                 <input type="text" th:field="*{xdata}" class="form-control" id="xdata" placeholder="values of x">
             </div>
         </div>
 
-        <div class="form-group" style="width:300px">
-            <label for="ydata" class="col-sm-2 control-label">ydata</label>
+        <div class="form-group" style="width:600px">
+            <label for="ydata" class="col-sm-2 control-label">y值</label>
             <div class="col-sm-10">
                 <input type="text"  th:field="*{ydata}" class="form-control" id="ydata" placeholder="values of y">
             </div>
         </div>
 
-        <div class="form-group" style="width:300px">
-            <label for="title" class="col-sm-2 control-label">title</label>
+        <div class="form-group" style="width:600px">
+            <label for="title" class="col-sm-2 control-label">标题</label>
             <div class="col-sm-10">
                 <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="title of figure">
             </div>
         </div>
 
-        <div class="form-group" style="width:300px">
-            <label for="xlabel" class="col-sm-2 control-label">Xlabel</label>
+        <div class="form-group" style="width:600px">
+            <label for="xlabel" class="col-sm-2 control-label">x标签</label>
             <div class="col-sm-10">
                 <input type="text" th:field="*{xlabel}" class="form-control" id="xlabel" placeholder="label of x">
             </div>
         </div>
 
-        <div class="form-group" style="width:300px">
-            <label for="ylabel" class="col-sm-2 control-label">Ylabel</label>
+        <div class="form-group" style="width:600px">
+            <label for="ylabel" class="col-sm-2 control-label">y标签</label>
             <div class="col-sm-10">
                 <input type="text" th:field="*{ylabel}" class="form-control" id="ylabel" placeholder="label of y">
             </div>
@@ -66,17 +82,80 @@
 
         <div class="form-group">
             <div>
-                <button type="submit" class="btn btn-primary" id="btn" >Submit</button>
-                <input type="reset" class="btn btn-warning" value="Reset" />
-
+                <button type="submit" class="btn btn-success" id="btn">提交</button>
+                <input type="reset" class="btn btn-success" value="重置" />
             </div>
         </div>
+
     </form>
 
-    <button class="btn btn-primary" onclick="ShowParams()"> Show Parameters </button>
-    <button class="btn btn-success" onclick="draw()"> Show Figure </button><br>
+        <button class="btn btn-primary" onclick="ShowParams()">显示参数</button>
+        <button class="btn btn-primary" onclick="draw()">绘制图片</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">设置图片大小</button>
+        <br><br>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            设置图片大小
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        宽度：<input id="width" type="text" /><br><br>
+                        高度：<input id="height" type="text" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">
+                            提交更改
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            $(function () { $('#myModal').modal('hide')});
+        </script>
+
+        <script>
+            $(function () { $('#myModal').on('hide.bs.modal', function () {
+                alert("图片大小设置成功！");
+		        $("#container").css({"width":$("#width").val()});
+		        $("#container").css({"height":$("#height").val()});
+		        draw();
+	            })
+            });
+        </script>
+
+        <br><br><br>
+        <form class="form-horizontal" role="form" method="POST" action="/upload" enctype="multipart/form-data">
+
+            <div class="form-group" style="width:600px">
+                <label for="upload" class="col-sm-2 control-label">选择文件</label>
+                <div class="col-sm-10">
+                    <input type="file" id="upload" name="file" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <button type="submit" class="btn btn-danger" id="btn_upload">提交</button>
+                    <input type="reset" class="btn btn-danger" value="重置" />
+
+                </div>
+            </div>
+
+        </form>
+
+        <a href="/review"><button class="btn btn-warning" id="review">数据预览</button></a>
+
         <p id="chart"></p><br>
-    <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+    <div id="container" style="width:550px; height:400px; margin: 0 auto"></div>
     </center>
 </body>
 

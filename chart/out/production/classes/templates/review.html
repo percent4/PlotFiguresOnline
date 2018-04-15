@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>数据预览</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<script th:inline="javascript">
+    function show(){
+    var result = /*[[${result}]]*/ null ;
+
+    var col_count = result[0].split(",").length;
+
+    // 展示表格各个变量的名称
+    var headers = result[0].split(",");
+
+    row=document.createElement("tr"); //创建行
+
+    for(var i=0; i< col_count; i++){
+        th1=document.createElement("th"); //创建单元格
+        th1.appendChild(document.createTextNode(headers[i])); //为单元格添加内容
+        row.appendChild(th1); //将单元格添加到行内
+    }
+
+    document.getElementById("index").append(row); //将行添加到<thread>中
+
+    for(var i=1; i <result.length; i++ ){
+        row=document.createElement("tr"); //创建行
+        for(var j=0; j< col_count; j++){
+            td1=document.createElement("td"); //创建单元格
+            td1.appendChild(document.createTextNode(result[i].split(",")[j])); //为单元格添加内容
+            row.appendChild(td1); //将单元格添加到行内
+        }
+        document.getElementById("body").append(row); //将行添加到<thread>中
+    }
+
+
+
+    }
+</script>
+
+<body>
+<p id="result"></p>
+<div class="table table-responsive table-striped table-bordered table-condensed">
+    <table class="table">
+
+        <thead id="index">
+
+        </thead>
+
+        <tbody id="body">
+
+        </tbody>
+    </table>
+</div>
+<button onclick="show()">Show</button>
+<a href="/chartplot"><button class="btn btn-warning" id="review">返回主界面</button></a>
+</body>
+</html>

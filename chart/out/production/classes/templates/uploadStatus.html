@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h1>Spring Boot - Upload Status</h1>
+
+<div th:if="${message}">
+    <h2 th:text="${message}"/>
+</div>
+<a href="/chartplot">Return to upload file</a><br>
+<a href="/review"><button class="btn btn-warning" id="review">数据预览</button></a>
+</body>
+</html>
