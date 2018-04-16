@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,10 +21,24 @@ public class ChartController {
 
     private String file_path;
 
+    //Save the uploaded file to this folder
+    private static String UPLOADED_FOLDER = "E://SpringUploadFile/";
+
     @GetMapping("/chartplot")
     public String getForm(Model model) {
         model.addAttribute("chart", new Chart());
         return "chartplot";
+
+    }
+
+    @GetMapping("/csvplot")
+    public String getCSV(Map<String,Object> map) {
+
+        File file = new File(UPLOADED_FOLDER);
+        String[] list2 = file.list();
+        map.put("csvfiles", list2);
+
+        return "csvplot";
     }
 
     @PostMapping("/chartplot")
@@ -36,12 +51,12 @@ public class ChartController {
         String ylabel = chart.getYlabel();
         Chart chart1 = new Chart(chartType, xdata, ydata, title, xlabel, ylabel);
         map.put("chart", chart);
+
+
         return "chartplot";
 
     }
 
-    //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "E://SpringUploadFile/";
 
     @GetMapping("/")
     public String index() {
@@ -53,7 +68,7 @@ public class ChartController {
                                    RedirectAttributes redirectAttributes) {
 
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "The file is empty! Please select a non-empty file to upload");
+            redirectAttributes.addFlashAttribute("message", "文件为空! 请选择非空文件上传！");
             return "redirect:uploadStatus";
         }
 
@@ -67,7 +82,7 @@ public class ChartController {
             file_path = UPLOADED_FOLDER + file.getOriginalFilename();
 
             redirectAttributes.addFlashAttribute("message",
-                    "You successfully uploaded '" + file.getOriginalFilename() + "', the file is about " +bytes.length/1024+" KB.");
+                    "您已成功上传 '" + file.getOriginalFilename() + "', 该文件大小约为 " +bytes.length/1024+" KB.");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,9 +102,9 @@ public class ChartController {
         readCSV read_csv = new readCSV(file_path);
         List<String> result = read_csv.read();
 
-        for(int i=0; i < result.size(); i++){
-            map.put("result", result);
-        }
+
+        map.put("result", result);
+
 
         return "review";
     }
