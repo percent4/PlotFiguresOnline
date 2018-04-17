@@ -36,7 +36,7 @@ public class readCSV {
 
             while (csvReader.readRecord()){
                 // 读取每一行数据，以逗号分开
-                System.out.println(csvReader.getRawRecord());
+                // System.out.println(csvReader.getRawRecord());
                 result.add(csvReader.getRawRecord());
             }
 
