@@ -29,6 +29,26 @@ function draw(){
     }
 }
 
+function csv_draw(){
+    var chart = $("#chart").text();
+    obj = JSON.parse(chart);
+
+    var chartType = obj.chartType;
+
+    if(chartType == "basicLineChart"){
+        drawLineChart();
+    }
+
+    if(chartType == "pieChart"){
+        drawPieChart();
+    }
+
+    if(chartType == "barChart"){
+        drawBarChart();
+    }
+
+}
+
 function drawLineChart(){
     Highcharts.setOptions({
         lang:{
@@ -227,7 +247,7 @@ function drawBarChart(){
         var tooltip = {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true

@@ -29,69 +29,77 @@
 
 <body>
     <center>
-    <h2 style="color:green">Plot Figure</h2>
+    <h2 style="color:red">绘图</h2>
 
-    <form class="form-horizontal" role="form" th:action="@{/chartplot}" th:object="${chart}" method="post">
+        <div class="panel panel-success" style="width:600px">
+            <div class="panel-heading">
+                <h3 class="panel-title">图形参数</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" th:action="@{/chartplot}" th:object="${chart}" method="post">
 
-        <div class="form-group" style="width:600px">
-            <label for="chartType" class="col-sm-2 control-label">图片类型</label>
-            <div class="col-sm-10">
-                <select class="form-control" id="chartType" th:field="*{chartType}">
-                    <option value="折线图" th:selected="${chartType=='折线图'}">折线图</option>
-                    <option value="饼图" th:selected="${chartType=='饼图'}">饼图</option>
-                    <option value="柱形图" th:selected="${chartType=='柱形图'}">柱形图</option>
-                </select>
+                    <div class="form-group" style="width:600px">
+                        <label for="chartType" class="col-sm-2 control-label">图片类型</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="chartType" th:field="*{chartType}">
+                                <option value="折线图" th:selected="${chartType=='折线图'}">折线图</option>
+                                <option value="饼图" th:selected="${chartType=='饼图'}">饼图</option>
+                                <option value="柱形图" th:selected="${chartType=='柱形图'}">柱形图</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="width:600px">
+                        <label for="xdata" class="col-sm-2 control-label">x值</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:field="*{xdata}" class="form-control" id="xdata" placeholder="values of x">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="width:600px">
+                        <label for="ydata" class="col-sm-2 control-label">y值</label>
+                        <div class="col-sm-10">
+                            <input type="text"  th:field="*{ydata}" class="form-control" id="ydata" placeholder="values of y">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="width:600px">
+                        <label for="title" class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="title of figure">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="width:600px">
+                        <label for="xlabel" class="col-sm-2 control-label">x标签</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:field="*{xlabel}" class="form-control" id="xlabel" placeholder="label of x">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="width:600px">
+                        <label for="ylabel" class="col-sm-2 control-label">y标签</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:field="*{ylabel}" class="form-control" id="ylabel" placeholder="label of y">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div>
+                            <button type="submit" class="btn btn-primary" id="btn">提交</button>
+                            <input type="reset" class="btn btn-warning" value="重置" />
+                        </div>
+                    </div>
+
+                </form>
             </div>
         </div>
 
-        <div class="form-group" style="width:600px">
-            <label for="xdata" class="col-sm-2 control-label">x值</label>
-            <div class="col-sm-10">
-                <input type="text" th:field="*{xdata}" class="form-control" id="xdata" placeholder="values of x">
-            </div>
-        </div>
-
-        <div class="form-group" style="width:600px">
-            <label for="ydata" class="col-sm-2 control-label">y值</label>
-            <div class="col-sm-10">
-                <input type="text"  th:field="*{ydata}" class="form-control" id="ydata" placeholder="values of y">
-            </div>
-        </div>
-
-        <div class="form-group" style="width:600px">
-            <label for="title" class="col-sm-2 control-label">标题</label>
-            <div class="col-sm-10">
-                <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="title of figure">
-            </div>
-        </div>
-
-        <div class="form-group" style="width:600px">
-            <label for="xlabel" class="col-sm-2 control-label">x标签</label>
-            <div class="col-sm-10">
-                <input type="text" th:field="*{xlabel}" class="form-control" id="xlabel" placeholder="label of x">
-            </div>
-        </div>
-
-        <div class="form-group" style="width:600px">
-            <label for="ylabel" class="col-sm-2 control-label">y标签</label>
-            <div class="col-sm-10">
-                <input type="text" th:field="*{ylabel}" class="form-control" id="ylabel" placeholder="label of y">
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div>
-                <button type="submit" class="btn btn-success" id="btn">提交</button>
-                <input type="reset" class="btn btn-success" value="重置" />
-            </div>
-        </div>
-
-    </form>
-
-        <button class="btn btn-primary" onclick="ShowParams()">显示参数</button>
-        <button class="btn btn-primary" onclick="draw()">绘制图片</button>
+        <button class="btn btn-danger" onclick="ShowParams()">显示参数</button>
+        <button class="btn btn-success" onclick="draw()">绘制图片</button>
         <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">设置图片大小</button>
+        <a href="/chartplot"><button class="btn btn-success">刷新网页</button></a>
+        <a href="/csvplot"><button class="btn btn-success">切换绘图模式</button></a>
         <br><br>
 
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
